@@ -7,29 +7,32 @@ public class MortgageCalculator {
 
         Scanner scan1 = new Scanner(System.in);
         System.out.print("Enter your home loan amount: ");
-        int mortgage = scan1.nextInt();
+        int loanAmount = scan1.nextInt(); //loan amount
 
         System.out.print("Enter your interest rate: ");
-        float rate = scan1.nextFloat();
-        float rate2 = (rate/100) / 12;
-        float rate3 = rate2 + 1;
+        float originalRate = scan1.nextFloat();
+        float monthlyInterestRate = (originalRate/100) / 12; //this is the formula to get a monthly rate
+
 
         System.out.print("How many years (period): ");
-        int period = scan1.nextInt();
-        int period2 = period * 12;
+        int amountOfYears = scan1.nextInt();
+        int numberOfMonths = amountOfYears * 12; //the 12 is the number of months in a year
 
-        double pow = Math.pow(rate3,period2);
+        double interestPowerOfMonths = Math.pow(1 + monthlyInterestRate,numberOfMonths); //This multiplies the monthly interest rates to the power of number of months.
 
-        double monthlyPayment = ((rate2 * pow) / (pow - 1)) * mortgage;
+        double monthlyPayment = ((monthlyInterestRate * interestPowerOfMonths) / (interestPowerOfMonths - 1)) * loanAmount;
+        // above is the actual formula to get a monthly mortgage payment.
+        // in summary: principal * rate(1+rate)^years*30 divided by (1+rate)^years*30 minus one.
+        // monthlyPayment = principal * (r(1+r)^n) / (((1+r)^n)-1)
 
-        NumberFormat money = NumberFormat.getCurrencyInstance();
-        String moneyString = money.format(monthlyPayment);
+        NumberFormat currencyInstance = NumberFormat.getCurrencyInstance();
+        String monthlyPaymentDollarSign = currencyInstance.format(monthlyPayment);
 
 
-        System.out.println("Principal: "+mortgage);
-        System.out.println("Annual Interest Rate: "+rate);
-        System.out.println("Period: "+period);
-        System.out.println("Mortgage: "+moneyString);
+        System.out.println("Principal: "+loanAmount);
+        System.out.println("Annual Interest Rate: "+originalRate);
+        System.out.println("Period: "+amountOfYears);
+        System.out.println("Mortgage: "+monthlyPaymentDollarSign);
 
 
     }
